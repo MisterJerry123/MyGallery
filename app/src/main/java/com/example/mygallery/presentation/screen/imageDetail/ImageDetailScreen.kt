@@ -44,7 +44,7 @@ fun ImageDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Image Details") },
+                title = { Text("사진 상세정보") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -84,7 +84,7 @@ fun ImageDetailScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 Text(
-                    text = "Name: ${image.name}",
+                    text = "파일명: ${image.name}",
                     style = MaterialTheme.typography.titleMedium
                 )
                 
@@ -98,14 +98,14 @@ fun ImageDetailScreen(
                 }
                 
                 Text(
-                    text = "Date Taken: $dateString",
+                    text = "날짜: $dateString",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = "Path: ${image.contentUri}",
+                    text = "경로: ${image.contentUri}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

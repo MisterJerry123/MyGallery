@@ -7,6 +7,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.example.mygallery.presentation.screen.home.HomeRoot
+import com.example.mygallery.presentation.screen.imageDetail.ImageDetailRoot
 
 @Composable
 fun NavigationRoot() {
@@ -20,8 +21,27 @@ fun NavigationRoot() {
             rememberViewModelStoreNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            entry<Route.Home>{
-                HomeRoot()
+            entry<Route.Home> {
+                HomeRoot(
+                    onImageClick = { image ->
+                        backStack.add(
+                            Route.ImageDetail(
+                                id = image.id,
+                                uri = image.contentUri.toString(),
+                                name = image.name,
+                                dateTaken = image.dateTaken
+                            )
+                        )
+                    }
+                )
+            }
+            entry<Route.ImageDetail> { route ->
+                ImageDetailRoot(
+                    route = route,
+                    onBackClick = {
+                        backStack.removeLast()
+                    }
+                )
             }
         }
     )

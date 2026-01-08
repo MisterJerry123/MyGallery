@@ -25,10 +25,14 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
+import androidx.compose.foundation.clickable
+import com.example.mygallery.domain.model.GalleryImage
+
 @Composable
 fun HomeScreen(
     state: HomeState,
     onPermissionGranted: () -> Unit,
+    onImageClick: (GalleryImage) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -71,7 +75,9 @@ fun HomeScreen(
                             .build(),
                         contentDescription = image.name,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(120.dp)
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clickable { onImageClick(image) }
                     )
                 }
             }

@@ -10,7 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import android.content.Intent
+import androidx.compose.material.icons.filled.Share
+import androidx.core.content.FileProvider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +49,45 @@ fun ImageDetailScreen(
     val image = state.image
     val context = LocalContext.current
 
+    val scope = rememberCoroutineScope()
+
+    fun shareImage() {
+        if (image == null) return
+        scope.launch(Dispatchers.IO) {
+            try {
+                val cachePath = File(context.cacheDir, "shared_images")
+                cachePath.mkdirs()
+                val newFile = File(cachePath, "shared_image.jpg")
+                val contentUri = image.contentUri
+                val inputStream = context.contentResolver.openInputStream(contentUri)
+                val outputStream = FileOutputStream(newFile)
+                inputStream?.copyTo(outputStream)
+                inputStream?.close()
+                outputStream.close()
+
+                val contentUriToShare = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider",
+                    newFile
+                )
+
+                val shareIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    setDataAndType(contentUriToShare, context.contentResolver.getType(contentUriToShare) ?: "image/*")
+                    putExtra(Intent.EXTRA_STREAM, contentUriToShare)
+                    type = "image/*" // Ensure type is set for ACTION_SEND
+                }
+                
+                val chooser = Intent.createChooser(shareIntent, "Share Image")
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(chooser)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -50,6 +97,14 @@ fun ImageDetailScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { shareImage() }) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = "Share"
                         )
                     }
                 }

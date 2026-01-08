@@ -1,5 +1,7 @@
 package com.example.mygallery.presentation.screen.home
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,11 +17,15 @@ fun HomeRoot(
 ) {
     val state by viewModel.state.collectAsState()
     
-    HomeScreen(
-        state = state,
-        onPermissionGranted = viewModel::onPermissionGranted,
-        onImageClick = onImageClick,
+    Scaffold(
         modifier = modifier
-    )
+    ) { innerPadding ->
+        HomeScreen(
+            state = state,
+            onPermissionGranted = viewModel::onPermissionGranted,
+            onImageClick = onImageClick,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
 }
     

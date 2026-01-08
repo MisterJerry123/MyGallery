@@ -24,24 +24,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.mygallery.domain.model.GalleryImage
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun HomeScreen(
-    state: HomeState,
-    pagedImages: Flow<PagingData<GalleryImage>>,
+    pagingItems: LazyPagingItems<GalleryImage>,
     onPermissionGranted: () -> Unit,
     onImageClick: (GalleryImage) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val pagingItems = pagedImages.collectAsLazyPagingItems()
 
     val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_IMAGES

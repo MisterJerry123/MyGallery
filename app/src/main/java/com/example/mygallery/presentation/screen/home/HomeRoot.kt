@@ -22,6 +22,7 @@ fun HomeRoot(
     ) { innerPadding ->
         HomeScreen(
             state = state,
+            pagedImages = viewModel.pagedImages,
             onPermissionGranted = viewModel::onPermissionGranted,
             onImageClick = onImageClick,
             modifier = Modifier.padding(innerPadding)

@@ -1,0 +1,24 @@
+# Built artifacts
+*.apk
+*.ap_
+*.aab
+
+# Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Secrets
+secrets.properties
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

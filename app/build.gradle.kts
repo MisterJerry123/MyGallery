@@ -37,8 +37,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlin{
-        compilerOptions{
+    kotlin {
+        compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
@@ -82,4 +82,8 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    //paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 }
